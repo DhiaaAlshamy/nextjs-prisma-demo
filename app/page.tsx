@@ -1,31 +1,36 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import NavBar from './components/NavBar';
-import Header from './components/Header';
-
-export default function Home() {
+import Image from "next/image";
+import Link from "next/link";
+import NavBar from "./components/NavBar";
+import Header from "./components/Header";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+async function fetchRestaurants() {
+  const restaurants = await prisma.restaurant.findMany();
+  return restaurants;
+  // console.log(restaurants);
+}
+export default async function Home() {
+  const res = await fetchRestaurants();
+  console.log({ res });
   return (
     <main className="bg-gray-100 min-h-screen w-screen">
       <main className="max-w-screen-2xl m-auto bg-white">
         {/* NAVBAR */}
-        <NavBar/>
+        <NavBar />
         {/* NAVBAR */}
         <main>
           {/* HEADER */}
-          <Header/>
+          <Header />
           {/* HEADER */} {/* CARDS */}
           <div className="py-3 px-36 mt-10 flex flex-wrap justify-center">
             {/* CARD */}
-            <div
-              className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer"
-            >
+            <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">
               <img
                 src="https://resizer.otstatic.com/v2/photos/wide-huge/2/31852905.jpg"
                 alt=""
                 className="w-full h-36"
               />
               <Link href="restaurant/milestones">
-
                 <div className="p-1">
                   <h3 className="font-bold text-2xl mb-2">Milestones Grill</h3>
                   <div className="flex items-start">
@@ -47,6 +52,5 @@ export default function Home() {
         </main>
       </main>
     </main>
-
-  )
+  );
 }
