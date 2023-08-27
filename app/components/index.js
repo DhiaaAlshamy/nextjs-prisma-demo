@@ -8,3 +8,5 @@ export { default as Rating } from "./Rating";
 export { default as Reviews } from "./Reviews";
 export { default as Title } from "./Title";
 export { default as RestaurantCard } from "./RestaurantCard";
+export { default as Menu } from "./Menu";
+export { default as MenuCard } from "./MenuCard";
