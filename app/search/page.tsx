@@ -11,7 +11,7 @@ const {router}=useRouter()
 const [location, setLocation] = useState('')
 
 const locationChanged=(e: any)=>{
-  console.log(e)
+  // console.log(e)
   // setLocation({...location,e.value})
 }
 
