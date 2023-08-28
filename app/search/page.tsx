@@ -11,32 +11,25 @@ interface SearchParams {
 const prisma = new PrismaClient();
 
 const fetchRestataurnatsByCity = async (searchParams: SearchParams) => {
+  const where: any = {};
   let restaurants: RestaurantType[] = [];
-  if (searchParams.city)
-    restaurants = await prisma.restaurant.findMany({
-      where: {
-        location: {
-          name: { equals: searchParams.city },
-        },
-      },
-      include: {
-        location: true,
-        cuisine: true,
-      },
-    });
-  else if (searchParams.cuisine)
-    restaurants = await prisma.restaurant.findMany({
-      where: {
-        cuisine: {
-          name: { equals: searchParams.cuisine },
-        },
-      },
-      include: {
-        location: true,
-        cuisine: true,
-      },
-    });
-
+  if (searchParams.city) {
+    where.location = {
+      name: { equals: searchParams.city },
+    };
+  }
+  if (searchParams.cuisine) {
+    where.cuisine = {
+      name: { equals: searchParams.cuisine },
+    };
+  }
+  restaurants = await prisma.restaurant.findMany({
+    where,
+    include: {
+      location: true,
+      cuisine: true,
+    },
+  });
   return restaurants;
 };
 const fetchCuisins = async () => {
@@ -79,7 +72,7 @@ async function SearchPage({ searchParams }: { searchParams: SearchParams }) {
                   key={location.id}
                   href={{
                     pathname: "/search",
-                    query: { city: location.name },
+                    query: { ...searchParams, city: location.name },
                   }}
                 >
                   {location.name}
@@ -94,7 +87,7 @@ async function SearchPage({ searchParams }: { searchParams: SearchParams }) {
                   key={cuisine.id}
                   href={{
                     pathname: "/search",
-                    query: { cuisine: cuisine.name },
+                    query: { ...searchParams, cuisine: cuisine.name },
                   }}
                 >
                   {cuisine.name}
