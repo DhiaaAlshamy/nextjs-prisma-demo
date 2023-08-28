@@ -27,7 +27,7 @@ const fetchRestataurnatsByCity = async (searchParams: SearchParams) => {
   else if (searchParams.cuisine)
     restaurants = await prisma.restaurant.findMany({
       where: {
-        location: {
+        cuisine: {
           name: { equals: searchParams.cuisine },
         },
       },
@@ -71,16 +71,34 @@ async function SearchPage({ searchParams }: { searchParams: SearchParams }) {
         <div className="flex py-4 m-auto w-2/3 justify-between items-start">
           {/* SEARCH SIDE BAR */}
           <div className="w-1/5">
-            <div className="border-b pb-4">
+            <div className="border-b pb-4 flex flex-col">
               <h1 className="mb-2">Region</h1>
               {locations.map((location) => (
-                <p className="font-light text-reg">{location.name}</p>
+                <Link
+                  className="font-light text-reg"
+                  key={location.id}
+                  href={{
+                    pathname: "/search",
+                    query: { city: location.name },
+                  }}
+                >
+                  {location.name}
+                </Link>
               ))}
             </div>
-            <div className="border-b pb-4 mt-3">
+            <div className="border-b pb-4 mt-3 flex flex-col">
               <h1 className="mb-2">Cuisine</h1>
               {cuisines.map((cuisine) => (
-                <p className="font-light text-reg">{cuisine.name}</p>
+                <Link
+                  className="font-light text-reg"
+                  key={cuisine.id}
+                  href={{
+                    pathname: "/search",
+                    query: { cuisine: cuisine.name },
+                  }}
+                >
+                  {cuisine.name}
+                </Link>
               ))}
             </div>
             <div className="mt-3 pb-4">
